@@ -35,9 +35,11 @@ frametalk.request = function(otherWindow, name, data, targetOrigin = '*') {
 	});
 };
 
-frametalk.replyOn = function(name, callback) {
+frametalk.replyOn = function(name, callback, otherWindow) {
+	if(!otherWindow) {
+		otherWindow = frametalk._getSourceFrameWindow(event.source);
+	}
 	return frametalk.on(name, (event, dataRaw) => {
-		const otherWindow = frametalk._getSourceFrameWindow(event.source);
 		const uniqueName = name + '_' + dataRaw.requestId;
 		const data = omitRequestId(dataRaw);
 
